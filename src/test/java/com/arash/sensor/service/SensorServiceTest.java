@@ -30,7 +30,6 @@ public class SensorServiceTest {
     @InjectMocks
     private SensorService sensorService;
 
-
     @Test
     public void register_measurement_async_test(){
         ZonedDateTime time = ZonedDateTime.now();

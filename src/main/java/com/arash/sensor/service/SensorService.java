@@ -8,6 +8,7 @@ import com.arash.sensor.dto.response.MetricsResponse;
 import com.arash.sensor.dto.response.SensorStatusResponse;
 import com.arash.sensor.service.event.MeasurementEvent;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
@@ -22,6 +23,9 @@ public class SensorService {
 
     private ApplicationEventPublisher publisher;
     private SensorRepository sensorRepository;
+
+    @Value("app.co2.accept.level")
+    private  Integer acceptableCo2Level;
 
     @Autowired
     public SensorService(ApplicationEventPublisher applicationEventPublisher, SensorRepository sensorRepository) {
@@ -48,14 +52,14 @@ public class SensorService {
     public SensorStatusResponse findStatus(String uuid) {
         List<SensorEntity> co2LevelHistory = sensorRepository.findTop3ByUuidOrderByTimeDesc(uuid);
         SensorStatusResponse result = new SensorStatusResponse(SensorStatus.UNKNOWN);
-        if (co2LevelHistory.size() < 3 && !co2LevelHistory.isEmpty() && co2LevelHistory.get(0).getCo2Level() >= 2000) {
+        if (co2LevelHistory.size() < 3 && !co2LevelHistory.isEmpty() && co2LevelHistory.get(0).getCo2Level() >= acceptableCo2Level) {
             result.setStatus(SensorStatus.WARN);
         }
-        int sensorAlertCount = co2LevelHistory.stream().filter(item -> item.getCo2Level() >= 2000).collect(Collectors.toList()).size();
+        int sensorAlertCount = co2LevelHistory.stream().filter(item -> item.getCo2Level() >= acceptableCo2Level).collect(Collectors.toList()).size();
         if (sensorAlertCount == 3) {
             result.setStatus(SensorStatus.ALERT);
         }
-        int sensorOkCount = co2LevelHistory.stream().filter(item -> item.getCo2Level() < 2000).collect(Collectors.toList()).size();
+        int sensorOkCount = co2LevelHistory.stream().filter(item -> item.getCo2Level() < acceptableCo2Level).collect(Collectors.toList()).size();
         if (sensorOkCount == 3) {
             result.setStatus(SensorStatus.OK);
         }
