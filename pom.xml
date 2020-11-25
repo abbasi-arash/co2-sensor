@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.arash</groupId>
-    <artifactId>sensor</artifactId>
+    <artifactId>sensor-api</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <name>sensor</name>
-    <description>co2 sensor mesurement</description>
+    <name>sensor-api</name>
+    <description>co2 sensor measurement</description>
 
     <properties>
         <java.version>1.8</java.version>

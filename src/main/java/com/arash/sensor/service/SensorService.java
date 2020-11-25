@@ -24,7 +24,7 @@ public class SensorService {
     private ApplicationEventPublisher publisher;
     private SensorRepository sensorRepository;
 
-    @Value("app.co2.accept.level")
+    @Value("${app.co2.accept.level}")
     private  Integer acceptableCo2Level;
 
     @Autowired
