@@ -11,11 +11,11 @@ import java.util.List;
 
 @Repository
 public interface SensorRepository extends JpaRepository<SensorEntity, String> {
-    List<SensorEntity> findTop3ByUuidOrderByTimeDesc(String uuid);
+    List<SensorEntity> findTop2ByUuidOrderByTimeDesc(String uuid);
 
     @Query("SELECT MAX (e.co2Level) FROM SensorEntity e WHERE e.uuid = :uuid and e.time between :startDate and :endDate")
-    Integer findMaxCo2Level(@Param("uuid") String uuid,@Param("startDate") ZonedDateTime startDate,@Param("endDate") ZonedDateTime endDate);
+    Integer findMaxCo2Level(@Param("uuid") String uuid, @Param("startDate") ZonedDateTime startDate, @Param("endDate") ZonedDateTime endDate);
 
     @Query("SELECT AVG(e.co2Level) FROM SensorEntity e WHERE e.uuid = :uuid and e.time between :startDate and :endDate")
-    Integer findAverageCo2Level(@Param("uuid") String uuid,@Param("startDate") ZonedDateTime startDate,@Param("endDate") ZonedDateTime endDate);
+    Integer findAverageCo2Level(@Param("uuid") String uuid, @Param("startDate") ZonedDateTime startDate, @Param("endDate") ZonedDateTime endDate);
 }

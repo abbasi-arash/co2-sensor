@@ -30,16 +30,15 @@ public class SensorRepositoryTest {
     }
 
     @Test
-    public void find_top3_by_uuid_order_by_time_desc_test() {
+    public void find_top2_by_uuid_order_by_time_desc_test() {
         String uuid = "38112cac-6fd9-40c2-a270-33e85b50c40f";
         SensorEntity sensorEntity1 = new SensorEntity(uuid, ZonedDateTime.now(), 1600);
-        SensorEntity sensorEntity2 = new SensorEntity(uuid, ZonedDateTime.now().minusMinutes(4), 3000);
-        SensorEntity sensorEntity3 = new SensorEntity(uuid, ZonedDateTime.now().minusMinutes(2), 1200);
-        SensorEntity sensorEntity4 = new SensorEntity(uuid, ZonedDateTime.now().minusMinutes(6), 650);
-        sensorRepository.saveAll(Lists.newArrayList(sensorEntity1, sensorEntity2, sensorEntity3, sensorEntity4));
-        List<SensorEntity> sensors = sensorRepository.findTop3ByUuidOrderByTimeDesc(uuid);
-        assertThat(sensors, hasSize(3));
-        assertThat(sensors, contains(sensorEntity1, sensorEntity3, sensorEntity2));
+        SensorEntity sensorEntity2 = new SensorEntity(uuid, ZonedDateTime.now().minusMinutes(6), 3000);
+        SensorEntity sensorEntity3 = new SensorEntity(uuid, ZonedDateTime.now().minusMinutes(4), 650);
+        sensorRepository.saveAll(Lists.newArrayList(sensorEntity1, sensorEntity2, sensorEntity3));
+        List<SensorEntity> sensors = sensorRepository.findTop2ByUuidOrderByTimeDesc(uuid);
+        assertThat(sensors, hasSize(2));
+        assertThat(sensors, contains(sensorEntity1, sensorEntity3));
     }
 
     @Test
